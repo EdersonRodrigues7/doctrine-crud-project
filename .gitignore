@@ -1,0 +1,6 @@
+/vendor
+/*.json
+/*.lock
+/*.sqlite
+.env*.local
+.env
