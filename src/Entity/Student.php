@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Repository\StudentRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
@@ -11,13 +12,18 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\ManyToMany;
 use Doctrine\ORM\Mapping\OneToMany;
 
-#[Entity()]
+#[Entity(repositoryClass: StudentRepository::class)]
 class Student
 {
     #[Id, GeneratedValue, Column]
     private int $id;
 
-    #[OneToMany(targetEntity: Phone::class, mappedBy: 'student', cascade: ['persist', 'remove'])]
+    #[OneToMany(
+        targetEntity: Phone::class, 
+        mappedBy: 'student', 
+        cascade: ['persist', 'remove'],
+        fetch: 'EAGER'
+    )]
     private Collection $phones;
 
     #[ManyToMany(targetEntity: Course::class, inversedBy: 'students')]

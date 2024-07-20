@@ -3,3 +3,4 @@
 /*.sqlite
 .env*.local
 .env
+var/cache
