@@ -4,18 +4,19 @@ use App\Entity\Course;
 use App\Entity\Phone;
 use App\Helper\EntityManagerCreator;
 use App\Entity\Student;
+use App\Repository\StudentRepository;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
 $entityManager = EntityManagerCreator::createEntityManager();
 
-$studentClass = Student::class;
-$dql = "SELECT student FROM $studentClass student";
+/**@var StudentRepository $studentRepository*/
+$studentRepository = $entityManager->getRepository(Student::class);
 
 /**@var Student[] $students*/
-$students = $entityManager->createQuery($dql)->getResult();
+$students = $studentRepository->studentsAndCourses();
 
-$msg = "STUDENTS LIST \n";
+$msg = "\nSTUDENTS LIST \n";
 foreach($students as $student){
     $msg .= "ID: {$student->getId()} | Name: {$student->getName()} ";
 
@@ -38,9 +39,8 @@ foreach($students as $student){
     $msg .= implode(',', $courses);
     $msg .= "\n";
     
-    echo $msg . "\n";
 }
 
-$countQuery = "SELECT COUNT(student) FROM $studentClass student";
-$count = $entityManager->createQuery($countQuery)->getSingleScalarResult();
-echo "NUMBER OF STUDENTS: " . $count . "\n";
+echo $msg . "\n";
+
+echo $studentRepository->count([]) . "\n";
