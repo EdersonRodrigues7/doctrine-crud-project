@@ -9,13 +9,15 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 $entityManager = EntityManagerCreator::createEntityManager();
 
-$studentRepository = $entityManager->getRepository(Student::class);
+$studentClass = Student::class;
+$dql = "SELECT student FROM $studentClass student";
 
 /**@var Student[] $students*/
-$students = $studentRepository->findAll();
+$students = $entityManager->createQuery($dql)->getResult();
 
+$msg = "STUDENTS LIST \n";
 foreach($students as $student){
-    $msg = "ID: {$student->getId()} | Name: {$student->getName()} ";
+    $msg .= "ID: {$student->getId()} | Name: {$student->getName()} ";
 
     // Phones
     $msg .= "| Phones: ";
@@ -36,5 +38,9 @@ foreach($students as $student){
     $msg .= implode(',', $courses);
     $msg .= "\n";
     
-    echo $msg;
+    echo $msg . "\n";
 }
+
+$countQuery = "SELECT COUNT(student) FROM $studentClass student";
+$count = $entityManager->createQuery($countQuery)->getSingleScalarResult();
+echo "NUMBER OF STUDENTS: " . $count . "\n";
