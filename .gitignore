@@ -1,5 +1,4 @@
 /vendor
-/*.json
 /*.lock
 /*.sqlite
 .env*.local
