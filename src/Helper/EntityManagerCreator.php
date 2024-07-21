@@ -57,13 +57,16 @@ class EntityManagerCreator
             )
         );
 
-        // configuring the database connection
+        // Database connection
         $connection = DriverManager::getConnection([
-            'driver' => 'pdo_sqlite',
-            'path' => __DIR__ . '/../../db.sqlite',
+            'driver' => 'pdo_mysql',
+            'host' => getenv('DATABASE_HOST'),
+            'port' => getenv('DATABASE_PORT'),
+            'dbname' => getenv('DATABASE_NAME'),
+            'user' => getenv('DATABASE_USERNAME'),
+            'password' => getenv('DATABASE_PASSWORD')
         ], $config);
 
-        // obtaining the entity manager
         $entityManager = new EntityManager($connection, $config);
 
         return $entityManager;
